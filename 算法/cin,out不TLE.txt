@@ -1,0 +1,4 @@
+ios::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+解除cin，out的束缚，提高至与printf和scanf的速度，但是不能与printf和scanf混用

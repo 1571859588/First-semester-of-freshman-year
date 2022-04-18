@@ -1,0 +1,124 @@
+栈
+栈（ Stack ) 是一种能有效帮助我们临时保存数据的数据结构，按照最后进人栈的数据最先出栈 ( Last In First Out, LIFO, 后入先出 ) 的规则管理数据。
+
+操作
+► push(x): 在栈顶部添加元素 x
+► pop(): 从栈顶部取出元素
+► size():返回栈顶元素素数
+► empty():栈为空的时返回true
+► isEmpty() : 检查栈是否为空
+► isFull() : 检查栈是否已满
+※ 一般情况下， 栈还具有 “引用栈顶元素” 和 “检查栈中是否含有指定数据” 的操作
+
+规则
+数据中最后加人的元素最先被取出，即 pop 取出的元素是最后一次被 push 的元素（ 距离上一次 push 最近的元素 ）。
+
+用数组实现栈(逆波兰表达式数组法)
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+int top,s[1000];
+void push(int x)
+{
+	s[++top]=x;
+}
+int pop()
+{
+	top--;
+	return s[top+1];
+}
+int main(void)
+{
+	int a,b;
+	top=0;
+	char c[100];
+	while (scanf("%s",c)!=EOF)
+	{
+		if(c[0]=='+')
+		{
+			a=pop();
+			b=pop();
+			push(a+b);
+		}
+		else if(c[0]=='-')
+		{
+			b=pop();
+			a=pop();
+			push(a-b);
+		}
+		else if(c[0]=='*')
+		{
+			a=pop();
+			b=pop();
+			push(a*b);
+		}
+		else 
+		{
+			push(atoi(c));
+		}
+	}
+	printf("%d\n",pop());
+	return 0;
+}
+
+栈的使用方法
+#include<iostream>
+#include<stack>
+using namespace std;
+int main(void)
+{
+	stack<int> S;
+	S.push(3);
+	S.push(7);
+	S.push(1);
+	cout<<S.size()<<" ";
+	cout<<S.top()<<" ";
+	S.pop();
+	cout<<S.top()<<" ";
+	S.pop();
+	cout<<S.top()<<" ";
+	S.push(5);
+	cout<<S.top()<<" ";
+	S.pop();
+	cout<<S.top()<<endl;
+	return 0;
+}
+
+逆波兰表达式(STL)
+#include<iostream>
+#include<cstdlib>
+#include<stack>
+using namespace std;
+int main(void)
+{
+	stack<int> S;
+	int a,b,x;
+	string s;
+	while(cin>>s)
+	{
+		if(s[0]=='+')
+		{
+			a=S.top();S.pop();
+			b=S.top();S.pop();
+			S.push(a+b);
+		}
+		else if(s[0]=='-')
+		{
+			b=S.top();S.pop();
+			a=S.top();S.pop();
+			S.push(a-b);
+		}
+		else if(s[0]=='*')
+		{
+			b=S.top();S.pop();
+			a=S.top();S.pop();
+			S.push(a*b);
+		}
+		else 
+		{
+			S.push(atoi(s.c_str()));
+		}
+	}
+	cout<<S.top()<<endl;
+	return 0;
+}

@@ -1,0 +1,113 @@
+当需要向序列两端频繁的添加或删除元素时，应首选 deque 容器。
+
+操作
+► empty() : 检查队列是否为空
+► front() : 返回队头元素
+► back():返回队尾元素
+► pop_front() :从队头中删除元素
+► pop_back() ;从队尾中删除元素
+► push_back(x) :向队尾中添加元素x  
+► push_front(x):向队头添加元素x
+※ 一般情况下，队列还具有 “引用队头元素” 和“检查队列中是否含有指定数据” 的操作
+
+规则
+数 据 中 最 先 进 入 队 列 的 元 素（ 距 上 一 次 enqueue 时 间 最 久 的 元 素 ） 最 先 被 取 出，即dequeue 操作按照元素被添加的先后顺序取出元素。
+
+队列的实现(数组)
+#include<stdio.h>
+#include<string.h>
+#define LEN 100005
+typedef struct pp
+{
+	char name[100];
+	int t;
+}P;
+P Q[LEN];
+int head,tail,n;
+
+void enqueue(P x)
+{
+	Q[tail]=x;
+	tail=(tail+1)%LEN;
+}
+P dequeue()
+{
+	P x=Q[head];
+	head=(head+1)%LEN;
+	return x;
+}
+int min(int a,int b)
+{
+	return a<b?a:b;
+}
+int main(void)
+{
+	int elaps=0,c;
+	int i,q;
+	P u;
+	scanf("%d %d",&n,&q);
+	for(i=1;i<=n;i++)
+	{
+		scanf("%s",Q[i].name);
+		scanf("%d",&Q[i].t);
+	}
+	head=1;tail=n+1;
+	while(head!=tail)
+	{
+		u=dequeue();
+		c=min(q,u.t);/* 执行时间片 q 或所需时间 u.t 的处理 */
+		u.t-=c;/* 计算剩余的所需时间 */
+		elaps+=c; /*累计已经过的时间*/
+		if(u.t>0)
+		{
+			enqueue(u);
+		}
+		else 
+		{
+			printf("%s %d\n",u.name,elaps);
+		}
+	}
+	return 0;
+	
+}
+
+队列的实现(STL)
+#include<iostream>
+#include<queue>
+#include<string>
+using namespace std;
+int main(void)
+{
+	queue<string> Q;
+	Q.push("red");
+	Q.push("yellow");
+	Q.push("yellow");
+	Q.push("blue");
+	cout<<Q.front()<<" ";
+	Q.pop();
+	cout<<Q.front()<<" ";
+	Q.pop();
+	cout<<Q.front()<<" ";
+	Q.pop();
+	Q.push("green");
+	cout<<Q.front()<<" ";
+	Q.pop();
+	cout<<Q.front()<<endl;
+	return 0;
+}
+
+降序优先队列（数值越大，优先级越高）
+priority_queue<> q
+priority_queue<int,vector<int>,less<int> >q
+升序优先队列（数值越小，优先级越高）
+priority_queue<int,vector<int>,great<int> > q
+升序优先队列的另一种声明（重载<运算符）
+struct point
+{
+    int num;
+    friend bool operator<(point a,point b)
+    {
+        return a.num>b.num;
+    }
+};
+priority_queue<point>q;

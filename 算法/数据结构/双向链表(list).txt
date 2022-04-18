@@ -1,0 +1,34 @@
+list的使用方法(双向链表)
+#include<iostream>
+#include<list>
+using namespace std;
+int main(void)
+{
+	list<char> L;
+	L.push_front('b');
+	L.push_back('c');
+	L.push_front('a');
+	cout<<L.front();
+	cout<<L.back();
+	L.pop_front();
+	L.push_back('d');
+	cout<<L.front();
+	cout<<L.back()<<endl;
+	return 0;
+}
+
+list 的成员函数示例
+►size() 返回表的元素数
+►begin() 返回指向表开头的迭代器
+►end() 返回指向表末尾(最后一个元素的后一个位置 )的迭代器
+►push_front(x) 在表的开头添加元素 x
+►push_back(x) 在表的末尾添加元素 x 
+►pop_front() 删除位于表幵头的元素 
+►pop_back() 删除位于表末尾的元素 
+►insert(p, x) 在表的位置 p处插入元素 x 
+►erase(P) 删除表中位置 P的元素 
+►clear() 删除表中所有元素 
+
+list不支持随机访问，不可用[]和成员函数at()进行访问
+list不支持sort()进行排序（所有不支持随机访问的容器都不可使用）
+list自带成语函数sort，可用成员函数sort进行排序（list.sort())

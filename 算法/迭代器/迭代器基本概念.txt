@@ -1,0 +1,41 @@
+迭代器是一种对象，用于对 STL 容器的元素进行迭代处理。它指向容器内部的特定位置，并提供以下基本运算符。
+►++ : 让迭代器指向至下一元素
+►==,!= : 判断两个迭代器是否指向同一位置并返回结果
+►= : 将右侧的值代入左侧迭代器所引用元素的位置
+►* : 返回该位置的元素
+迭代器的优势在于，对任何种类的容器都可以用同一种方法（ 语法 ） 顺次访问其元素。此外， 在处理数组元素时，它还可以当作 C/C++ 的指针来用。也就是说，我们可以把迭代器看成通过通用接口 （ 函数等的使用方法 ）对容器进行迭代处理的指针。不过，即便接口相同， 其实现和行为也会因不同的容器而有所不同。
+
+► begin ( ) : 返冋指向容器开头的迭代器
+► end ( ) : 返回指向容器末尾的迭代器。这里的末尾指最后一个元素的下一个位置
+
+迭代器举例(iterator)
+#include<iostream>
+#include<vector>
+using namespace std;
+void print(vector<int> v)
+{
+	//从向量开头顺次访问
+	vector<int>::iterator it;
+	for(it=v.begin();it!=v.end();it++)
+	{
+		cout<<*it;
+	 } 
+	 cout<<endl;
+}
+int main(void)
+{
+	int N=4;
+	vector<int> v;
+	for(int i=0;i<N;i++)
+	{
+		int x;cin>>x;
+		v.push_back(x);
+	}
+	print(v);
+	vector<int>::iterator it=v.begin();
+	*it=3;
+	it++;
+	(*it)++;
+	print(v);
+	return 0;
+}

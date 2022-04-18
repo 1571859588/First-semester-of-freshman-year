@@ -1,0 +1,32 @@
+void Quicksort(int arry[],int L,int R)
+{
+      if(L>=R)
+	return 0;
+      int left=L,right=R;
+      int pivot = arry[left]; 
+      while(left<right)
+      {
+	while(left<right&&arry[right]>=pivot)
+	{
+		right--;
+	}
+	if(left<right)
+	{
+		arry[left]=arry[right];
+	}
+                while(left<right&&arry[left]<=pivot)
+	{
+		left++;
+	}
+	if(left<right)
+	{
+		arry[right]=arry[left];
+	}
+	if(left>=right)
+	{
+		arry[left]=pivot;
+	}
+       }
+Quicksort(arry,L,right-1);
+Quicksort(arry,right+1,R);
+}

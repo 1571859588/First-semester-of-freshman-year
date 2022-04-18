@@ -1,0 +1,142 @@
+1.gcd（最大公约数）
+int gcd(int x,int y)
+{
+    if(y==0)    {return x;}
+    return gcd(y,x%y);
+}
+2.递推/记忆化搜索
+solution【i】【j】代表在数的和为i的情况下分为j组共有的情况数。
+由于无论在数的和为几时，把它们分成0组都是0种情况，分成一组都是一种情况，
+所以j=0时全部要初始化为0，j=1时全部要初始化为1。
+同时，无论共分为几组，数的和为0和1是0种情况（i=j=1除外）
+所以i=0或i=1时j从2开始全部初始化为0。
+对于剩下的任意一个solution【i】【j】，都可以用如下方式求得：
+solution【i】【j】=第一个数为1的所有情况+第一个数不为1的所有情况。
+第一个数为1时，1占用了1个位置和占用了总数中的1是已经确定了的，
+因此，第一个数为1的所有情况=solution【i-1】【j-1】。
+第一个数不为1时，可以视为先在所有的位置上都加上一个1再对于所有的位置用新的总数求次数，
+所以定了的是占有了总数j个，位置仍然是j个，与原来相比没有变化。
+因此，第一个数不为1的所有情况=solution【i-j】【j】。
+所以solution【i】【j】=solution【i-1】【j-1】+solution【i-j】【j】。
+4.高精度算法
+(1)加法(倒序存储)
+    a4a3a2a1
+ +b4b3b2b1
+---------------
+    c4c3c2c1
+c[i]+=a[i]+b[i];
+c[i+1]=c[i]/10;
+c[i]=c[i]%10;
+(2)减法(倒序存储)
+if(a[i]<b[i])
+{
+    a[i+1]--;
+    a[i]=a[i]+10;
+}
+c[i]=a[i]-b[i];
+若输入过程中减数s2大于被减数s1，需要将二者位置调换(运用strcpy)，结果加上负号
+判断函数：
+bool compare(char s1[],char s2[])
+{
+	int u=strlen(s1),v=strlen(s2);
+	if(u!=v)return u>v;
+	int i=0;
+	for(i=0;i<u;i++)
+	{
+		if(s1[i]!=s2[i])
+		return s1[i]>s2[i];
+	}
+	return ture;
+}
+(3)乘法（倒序存储）
+c[i+j-1]+=a[i]*b[j];
+c[i+j]+=c[i+j-1]/10;
+c[i+j-1]%=10;
+(4)除法
+Ⅰ.高精度除低精度
+for(i=1;i<=la;i++)a[i]=s1[i-1]-'0';
+for(i=1;i<=la;i++)
+{
+	c[i]=(x*10+a[i])/b;
+	x=(x*10+a[i])%b;
+}
+Ⅱ.高精度除高精度（倒序存储）
+#include<stdio.h>
+#include<string.h>
+char s1[305],s2[305];
+int a[305],b[305],c[305],tmp[305];
+void init (int *x)//倒序存储函数
+{
+	int i;
+    	char s[305];
+	scanf("%s",s);
+	x[0]=strlen(s);
+	for(i=0;i<x[0];i++)
+  	{ 
+    		x[x[0]-i]=s[i]-'0';
+  	}
+}
+void print(int a[])//打印函数
+{              
+	int i;
+	if(a[0]<=0){printf("0\n");return;}
+	for(i=a[0];i>0;i--)printf("%d",a[i]);
+	return;
+}
+int compare(int a[],int b[])//返回1表示a>b，0表示a=b，-1表示a<b
+{
+	int i;
+	if(a[0]>b[0])return 1;//a的位数大于b，则a比b大
+	if(a[0]<b[0])return -1;
+	for(i=a[0];i>0;i--)
+	{
+		if(a[i]>b[i])return 1;
+		if(a[i]<b[i])return -1;
+	}
+	return 0;
+}
+void minu(int a[],int b[])//作减法
+{
+	int i;
+ 	for(i=1;i<=a[0];i++)
+	{
+		if(a[i]<b[i])
+		{	
+		a[i+1]--;
+		a[i]=a[i]+10;
+		}
+	a[i]=a[i]-b[i];
+	}
+	while(a[a[0]]==0&&a[0]>0)  a[0]--;//删除a的前导0，修正a的位数
+}
+void numcpy(int p[],int q[],int n)
+{
+	int i;
+	for(i=1;i<=p[0];i++)   q[i+n-1]=p[i];
+	q[0]=p[0]+n-1;
+}
+int main(void)
+{
+	int *a,*b;
+	init(a);init(b);
+	c[0]=a[0]-b[0]+1;
+	int i;
+ 	for(i=c[0];i>=1;i--)
+	{
+		memset(tmp,0,sizeof(tmp));
+		numcpy(b,tmp,i);
+		while(compare(a,tmp)>=0)
+		{
+			c[i]++;
+			minu(a,tmp);
+		}
+	}
+	while(c[c[0]]==0&&c[0]>0) c[0]--;
+	print(c);
+	print(a);//余数
+	return 0;
+}
+		
+前导0的删除（加减乘）: for (i=100;i>=0&&A[i]==0;i--);
+前导0的删除（除）：高精度除低精度:lc=1;while(c[lc]==0&&lc<la)lc++;
+                                高精度除高精度:while(c[c[0]]==0&&c[0]>0) c[0]--;

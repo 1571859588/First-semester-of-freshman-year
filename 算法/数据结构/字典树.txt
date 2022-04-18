@@ -1,0 +1,103 @@
+#include <cstdio>
+#include <cstring>
+#include <malloc.h>
+#include <iostream>
+using namespace std;
+#define MAXN 26
+char str[50017][117];
+typedef struct Trie
+{
+    int v;//根据需要变化
+    Trie *next[MAXN];
+    //next是表示每层有多少种类的数，如果只是小写字母，则26即可，
+    //若改为大小写字母，则是52，若再加上数字，则是62了
+}Trie;
+Trie *root;
+ 
+void createTrie(char *str)
+{
+    int len = strlen(str);
+    Trie *p = root, *q;
+    for(int i = 0; i < len; i++)
+    {
+        int id = str[i]-'a';
+        if(p->next[id] == NULL)
+        {
+            q = (Trie *)malloc(sizeof(Trie));
+            q->v = 1;//初始v==1
+            for(int j = 0; j < MAXN; j++)
+                q->next[j] = NULL;
+            p->next[id] = q;
+            p = p->next[id];
+        }
+        else
+        {
+        //    p->next[id]->v++;
+            p = p->next[id];
+        }
+    }
+     p->v = -1;//若为结尾，则将v改成-1表示
+}
+ 
+int findTrie(char *str)
+{
+    int len = strlen(str);
+    Trie *p = root;
+    for(int i = 0; i < len; i++)
+    {
+        int id = str[i]-'a';
+        p = p->next[id];
+        if(p == NULL) //若为空集，表示不存以此为前缀的串
+            return 0;
+     //   if(p->v == -1)   //字符集中已有串是此串的前缀
+     //       return -1;
+    }
+    //return -1;   //此串是字符集中某串的前缀
+    if(p->v == -1)//说明是完全匹配
+        return -1;
+    else
+        return 0;
+}
+int dealTrie(Trie* T)
+{
+    //动态字典树，有时会超内存,这是就要记得释放空间了
+    if(T==NULL)
+        return 0;
+    for(int i = 0; i < MAXN; i++)
+    {
+        if(T->next[i]!=NULL)
+            dealTrie(T->next[i]);
+    }
+    free(T);
+    return 0;
+}
+int main()
+{
+    root = (Trie *)malloc(sizeof(Trie));
+    for(int i = 0; i < MAXN; i++)
+        root->next[i] = NULL;
+    int cont = 0;
+    while(scanf("%s",str[cont])!=EOF)
+    {
+        createTrie(str[cont]);
+        cont++;
+    }
+    char a[117], b[117];
+    for(int i = 0; i < cont; i++)
+    {
+        int len = strlen(str[i]);
+        for(int j = 1; j < len; j++)
+        {
+            memset(a,'\0',sizeof(a));
+            memset(b,'\0',sizeof(b));
+            strncpy(a,str[i],j);
+            strncpy(b,str[i]+j,len-j);
+            if(findTrie(a)==-1 && findTrie(b)==-1)
+            {
+                printf("%s\n",str[i]);
+                break;
+            }
+        }
+    }
+    return 0;
+}

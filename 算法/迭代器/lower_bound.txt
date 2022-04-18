@@ -1,0 +1,19 @@
+lower_b0Und 是一种应用于有序数据范围内的算法，它可以返回一个迭代器，这个迭代器指向第一个不小于指定值 value 的元素。通过它， 我们既可以找出第一个能够恰当插入 value的位置，又能维持指定范围内的元素顺序（ 有序状态 ）。相对地， tipperjxnmd 返回的迭代器指向第一个大于指定值 value 的元素。
+
+lower_bound的使用
+#include<iostream>
+#include<algorithm>
+using namespace std;
+int main(void)
+{
+	int A[14] = {l, 1, 2, 2, 2, 4, 5, 5, 6, 8, 8, 8, 10, 15};
+	int *pos;
+	int idx;
+	pos=lower_bound(A,A+14,3)
+	idx= distance (A,pos);//distance 函数用于返回两个指针间的距离比如 distance (A, pos)会返回 A的开头到 pos 的距离（ =5 )。
+	cout<<"A["<<idx<<"]="<<*pos<<endl;
+	pos=lower_bound(A,A+14,2);
+	idx=distance(A,pos);
+	cout<<"A["<<idx<<"]="<<*pos<<endl;
+	return 0;
+}

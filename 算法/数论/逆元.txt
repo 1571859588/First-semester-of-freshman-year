@@ -1,0 +1,26 @@
+1.欧几里得几何算法
+void exgcd(long long a,long long b,long long &x,long long& y)
+{
+	if(!b)x=1,y=0;
+	else exgcd(b,a%b,y,x),y-=a/b*x;
+}
+计算出a关于b的逆元储存在x中（x，y外部定义无需初始化）
+求出的逆元不一定在1到b内，需要进行(x%b+b)%b的变化
+
+2.快速幂算法（需要两数进行互质）
+qpow(a,b)求a的b次幂
+根据费马小定理，若p是质数，则a在p下的逆元为a的p-2次幂
+long long qpow(long long a,long long b)
+{
+	long long  r = 1;
+	for (; b > 0; b >>= 1)
+	{
+		if (b & 1)//即b%2==1
+		{
+			r = r * a % mod;
+		}
+		a = a * a % mod;
+	}
+	return r;
+}
+eg.   c=qpow(x, mod - 2);（全局定义mod）

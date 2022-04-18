@@ -1,0 +1,37 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<vector>
+using namespace std;
+vector<int> G;
+void insertionSort(int A[],int n,int g)
+{
+	for(int i=g;i<n;i++)
+	{
+		int v=A[i];
+		int j=i-g;
+		while(j>=0&&A[j]>v)
+		{
+			A[j+g]=A[j];
+			j-=g;
+		}
+		A[j+g]=v;
+	}
+}
+void shellSOrt(int A[],int n)
+{
+	//生成G={1，4，13，40，121....3*g(n-1)+1}
+	for(int h=1;;)
+	{
+		if(h>n)
+		break;
+		G.push_back(h);
+		h=3*h+1;
+	 } 
+	 for(int i=G.size()-1;i>=0;i--)
+	 {
+	 	insertionSort(A,n,G[i]);
+	 }
+	 
+}

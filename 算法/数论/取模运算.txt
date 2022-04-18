@@ -1,0 +1,50 @@
+编程竞赛有相当一部分题目的结果过于庞大，整数类型无法存储，往往只要求输出取模的结果。
+例如(a+b)%p,若a+b的结果我们存储不了，再去取模，结果显然不对，我们为了防止溢出，可以先分别对a取模,b取模，再求和，输出的结果相同。
+a mod b表示a除以b的余数。有下面的公式：
+(a + b) % p = (a%p + b%p) %p
+(a - b) % p = ((a%p - b%p) + p) %p
+(a * b) % p = (a%p)*(b%p) %p
+
+
+1.幂取模：输入正整数a,n,m，输出 a^n mod m 的值
+typedef long long LL;
+LL pow_mod(LL x, LL n, LL mod)
+{
+	LL ans = 1;
+	while (n > 0)
+	{
+		if (n & 1)ans = ans*x%mod;//如果二进制最低位是1，那么乘以x^(2^i)
+		x = x*x%mod;//将x平方
+		n >>= 1;
+	}
+	return ans;
+}
+
+2.大整数取模：输入正整数n,m，输出n mod m的值。n≤10^100,m≤10^9。
+#define N 1000+10
+char n[N];
+int m;
+int main()
+{
+	scanf("%s%d", n, &m);
+	int len = strlen(n);
+	int ans = 0;
+	for (int i = 0; i < len; i++)
+		ans = (int)(((long long)ans * 10 + n[i] - '0') % m);
+	printf("%d\n", ans);
+}
+
+3.快速乘法取模
+typedef long long LL;
+LL q_mul(LL a, LL b, LL p)
+{
+    LL ans = 0;
+    while (b){
+        if(b&1LL) ans=(ans+a)%p;
+        //or ans=(ans+(b%2*a)%p)%p;
+        a = (a +a) % p;
+        b >>= 1;
+    }
+    return ans;
+}
+

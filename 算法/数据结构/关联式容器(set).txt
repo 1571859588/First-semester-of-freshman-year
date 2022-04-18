@@ -1,0 +1,20 @@
+set作为一个容器也是用来存储同一数据类型的数据类型，并且能从一个数据集合中取出数据，在set中每个元素的值都唯一，而且系统能根据元素的值自动进行排序。set中数元素的值不能直接被改变。C++ STL中标准关联容器set, multiset, map, multimap内部采用的就是一种非常高效的平衡检索二叉树：红黑树，也成为RB树(Red-Black Tree)。RB树的统计性能要好于一般平衡二叉树，所以被STL选择作为了关联容器的内部结构
+
+操作
+begin() ：返回set容器的第一个元素
+end() ：返回set容器的最后一个元素
+clear() ：删除set容器中的所有的元素
+empty() ：判断set容器是否为空
+max_size()：返回set容器可能包含的元素最大个数
+size() ：返回当前set容器中的元素个数
+rbegin：返回的值和end()相同
+rend()：返回的值和rbegin()相同。
+erase(iterator) ：删除定位器iterator指向的值
+erase(first,second)：删除定位器first和second之间的值
+erase(key_value)：删除键值key_value的值
+find() ：返回给定值值得定位器，如果没找到则返回end()
+count():统计元素的个数
+insert(key_value)：将key_value插入到set中 ，返回值是pair<set<int>::iterator,bool>，bool标志着插入是否成功，而iterator代表插入的位置，若key_value已经在set中，则iterator表示的key_value在set中的位置。
+inset(first,second)：将定位器first到second之间的元素插入到set中，返回值是void.
+lower_bound(key_value) ：返回第一个大于等于key_value的定位器
+upper_bound(key_value)：返回最后一个大于等于key_value的定位器

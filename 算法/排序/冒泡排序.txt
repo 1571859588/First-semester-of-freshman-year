@@ -1,0 +1,17 @@
+int bubbleSort(int a[], int n)
+{
+	int i,j;
+	bool flag=1;
+	for(i=0;flag;i++)
+	{
+		for(j=n-1;j>=i+1;j--)
+		{
+			if(a[j]<a[j-1])
+			{
+			swap(a[j],a[j-1]);
+			flag=1;
+			}
+		}
+	}
+	return 0;
+}
